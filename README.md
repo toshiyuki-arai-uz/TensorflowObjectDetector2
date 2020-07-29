@@ -15,9 +15,10 @@ You have to instal tensorflow>=2.0.0<br>
 git clone https://github.com/tensorflow/models.git<br>
 pip install tensorflow==2.2.0<br>
 pip install Cython<br>
-pip install tf_slim
-pip install protobuf
-protoc object_detection\protos\*.proto --python_out=.'
+pip install tf_slim<br>
+pip install protobuf<br>
+protoc object_detection\protos\*.proto --python_out=.'<br>
+
 
 </font>
 </td></tr>
@@ -25,11 +26,18 @@ protoc object_detection\protos\*.proto --python_out=.'
 
 </table>
 
-
+<br>
 Run TensorflowObjectDetector2.py script to detect objects in an image in the following way.<br><br>
 <b>
 >python TensorflowObjectDetector2.py .\images\img.png<br>
 </b>
+<br>
+<img src="./detected/img.png" width="80%">
+<br>
+In this case, we use CocoModelDownloader class and download the followng file:
+  'faster_rcnn_inception_v2_coco_2018_01_28.tar.gz'<br>
+from 'http://download.tensorflow.org/models/object_detection/'.
+<br>
 
 See also: https://github.com/atlan-antillia/TensorflowObjectDetector
 
