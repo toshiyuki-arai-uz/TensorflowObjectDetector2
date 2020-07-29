@@ -6,8 +6,8 @@ This is a simple python class TensorflowObjectDetector based on Tensorflow2 Obje
 </b></font>
 <br>
 <font size=2>
-We have downloaded <a href="https://github.com/tensorflow/models/tree/master/research/object_detection">Tensorflow2 Object Detection API</a>,  
-You have to instal tensorflow>=2.0.0<br>
+We have downloaded <a href="https://github.com/tensorflow/models/tree/master/research/object_detection">Tensorflow2 Object Detection API</a>.
+and installed tensorflow==2.2.0.<br>
 
 <table style="border: 1px solid red;">
 <tr><td>
@@ -18,7 +18,6 @@ pip install Cython<br>
 pip install tf_slim<br>
 pip install protobuf<br>
 protoc object_detection\protos\*.proto --python_out=.'<br>
-
 
 </font>
 </td></tr>
