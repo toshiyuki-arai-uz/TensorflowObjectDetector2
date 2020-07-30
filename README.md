@@ -71,4 +71,10 @@ python TensorflowObjectDetector2.py .\images\img.png detected [person,car]
 <img src="./detected/person_car_img.png" width="80%">
 <br>
 
+
+<br>
+<img src="./detected/person_car_img.png.txt.png" width="80%">
+<br>
+
+
  
