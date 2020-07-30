@@ -7,7 +7,7 @@
 #    research/object_detection/object_detection_tutorial.ipynb
 #
 # 2020/06/20
-# 2020/07/25 Modified to be run on Tensorflow 2.2.0
+# 2020/07/30 Modified to be run on Tensorflow 2.2.0
 
 
 #You have to run the following command to get tf_slim
@@ -48,6 +48,7 @@ tf.disable_v2_behavior()
 
 from utils import label_map_util
 from utils import visualization_utils as vis_util
+from vis_utils2 import *
 
 from FiltersParser       import FiltersParser
 
@@ -89,9 +90,8 @@ class TensorflowObjectDetector2:
   # Detect objects in each image in input_image_dir, and save the detected image 
   # to output_image_dir.
   
-  def detect_all(self, input_image_dir, output_image_dir):
+  def detect_all(self, input_image_dir, output_image_dir, filters=None):
   
-      
       image_list = []
 
       if os.path.isdir(input_image_dir):
@@ -106,11 +106,11 @@ class TensorflowObjectDetector2:
           
           print("filename {}".format(image_file_path))
           
-          self.detect(image_file_path, output_image_dir)
+          self.detect(image_file_path, output_image_dir, filters)
     
   
   ## Object detection for a single image to image_path  
-  def detect(self, image_path, image_output_dir):
+  def detect(self, image_path, image_output_dir, filters=None):
     image = Image.open(image_path)
     
     # the array based representation of the image will be used later in order to prepare the
@@ -185,18 +185,25 @@ class TensorflowObjectDetector2:
           output_dict[self.DETECTION_MASKS] = output_dict[self.DETECTION_MASKS][0]
 
     filename_only = self.get_filename_only(image_path)
-
     output_image_filepath = os.path.join(image_output_dir, filename_only)
-
+    
+    print("filters {}".format(filters))
+    
+    if filters is not None:
+      parser = FiltersParser(str(filters))
+      output_image_filepath = parser.get_ouput_filename(image_path, image_output_dir)  
+    print(output_image_filepath)
+    
     # Draw detected boxes, classes, scores onto image_np,
     # and save it to the output_image_filepath
-    self.visualize(image_np, output_dict, output_image_filepath)
+    self.visualize(filters, image_np, output_dict, output_image_filepath)
 
 
-  def visualize(self, image_np, output_dict, output_image_filepath):
-  
+  def visualize(self, filters, image_np, output_dict, output_image_filepath):
     # Visualization of the results of a detection.
-    vis_util.visualize_boxes_and_labels_on_image_array(
+    # vis_utils2.py
+    (image, detected_objects) = visualize_boxes_and_labels_on_image_array_with_filters(
+        filters,
         image_np,
         output_dict[self.DETECTION_BOXES],
         output_dict[self.DETECTION_CLASSES],
@@ -208,6 +215,16 @@ class TensorflowObjectDetector2:
     pil_img = Image.fromarray(image_np)
 
     pil_img.save(output_image_filepath) 
+
+    # Save detected_objects data to a detected_objects_path file.
+    # [(1, 'car', '90%'), (2, 'person', '8%'),... ]  
+    detected_objects_path = output_image_filepath + '.txt'
+
+    with open(detected_objects_path, mode='w') as f:
+      for item in detected_objects:
+         (id, label, score) = item
+         line = str(id) + " " + str(label) + ": " + str(score) + "\n"
+         f.write(line)
 
 
   def get_filename_only(self, input_image_filename):
@@ -238,7 +255,7 @@ def parse_args(argv):
 
   if len(argv) >= 4:
     str_filters = argv[3]
-    filtersParser = FiltersParser(str_filter)
+    filtersParser = FiltersParser(str_filters)
     filters = filtersParser.get_filters()
     
   if len(argv) >= 5:
@@ -268,7 +285,7 @@ if __name__ == "__main__":
   try:
      input_image_path, output_image_dir, filters, frozen_graph_path, label_path = parse_args(sys.argv)
      
-     if len(sys.argv) <=3:
+     if len(sys.argv) == 3 or len(sys.argv) == 4:
        use_coco_model = True
 
      if use_coco_model==True:
@@ -276,10 +293,7 @@ if __name__ == "__main__":
        downloader = CocoModelDownloader()
        downloader.download()
        frozen_graph_path = downloader.get_frozen_graph_path()
-       if not filters ==None:
-         label_path        = downloader.get_filtered_label_path(filters)
-       else:
-         label_path        = downloader.get_label_path()
+       label_path        = downloader.get_label_path()
        print("frozen_graph_path {}".format(frozen_graph_path))
        print("label_path        {}".format(label_path))
  
@@ -287,11 +301,11 @@ if __name__ == "__main__":
 
      if os.path.isfile(input_image_path):
        # If input_image_path is a file
-       detector.detect(input_image_path, output_image_dir)
+       detector.detect(input_image_path, output_image_dir, filters)
          
      elif os.path.isdir(input_image_path):
-       detector.detect_all(input_image_path, output_image_dir)
-       
+       detector.detect_all(input_image_path, output_image_dir, filters)
+
      else:
         print("Inavlid input_file type {}".format(input_image_path))
      

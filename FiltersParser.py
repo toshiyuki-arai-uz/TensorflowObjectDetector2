@@ -20,6 +20,8 @@
 # EfficientDet 
 # FiltersParser.py
 
+import os
+
 ## coco classes
 COCO_CLASSES = [
     'N/A', 'person', 'bicycle', 'car', 'motorcycle', 'airplane', 'bus',
@@ -76,17 +78,15 @@ class FiltersParser:
             if rpos >0:
                 fname = input_image_filename[rpos+1:]
           
-        #print("Input filename {}".format(fname))
         
         abs_out  = os.path.abspath(image_out_dir)
         if not os.path.exists(abs_out):
             os.makedirs(abs_out)
 
         filname = ""
-        if self.str_filters != None:
-            filname = self.str_filters.strip('[]')
-            filname = filname.strip("'")
+        if self.str_filters is not None:
+            filname = self.str_filters.strip("[]").replace("'", "").replace(", ", "_")
             filname += "_"
-
+        
         output_image_filename = os.path.join(abs_out, filname + fname)
         return output_image_filename

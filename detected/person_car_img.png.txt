@@ -1,0 +1,16 @@
+1 car:  98%
+2 car:  97%
+3 car:  95%
+4 car:  88%
+5 person:  87%
+6 car:  87%
+7 person:  86%
+8 car:  79%
+9 car:  71%
+10 car:  71%
+11 car:  70%
+12 car:  69%
+13 car:  67%
+14 car:  66%
+15 person:  56%
+16 person:  56%

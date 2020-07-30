@@ -1,0 +1,16 @@
+1 truck:  92%
+2 car:  90%
+3 car:  89%
+4 car:  83%
+5 car:  82%
+6 mouse:  80%
+7 car:  79%
+8 mouse:  79%
+9 car:  77%
+10 car:  77%
+11 person:  73%
+12 car:  57%
+13 person:  55%
+14 truck:  54%
+15 car:  53%
+16 truck:  50%
