@@ -23,9 +23,17 @@ protoc object_detection\protos\*.proto --python_out=.'<br>
 
 </font>
 </td></tr>
-
-
 </table>
+
+<br>
+Please clone <a href="https://github.com/atlan-antillia/TensorflowObjectDetector2.git">TensorflowObjectDetector2.git</a> in a working folder.
+<pre>
+>git clone  https://github.com/atlan-antillia/TensorflowObjectDetector2.git
+</pre>
+Copy the files in that folder to <i>somewhere_cloned_folder/models/research/object_detection/</i> folder.
+<br>
+
+
 <h2>2 TensorflowObjectDetector2 class</h2>
  We have updated TensorflowObjectDetector2 class and added a new <i>vis_utils2.py</i> file to be able to save detected objects information of the list of 
 each detected object data (id, label, score) to a text file.
